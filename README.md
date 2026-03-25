@@ -89,14 +89,3 @@ POST /api/voluntario/aprovar/123
 * Certifique-se de que a variável `PORT` esteja definida corretamente.
 * O endpoint utiliza o método `POST` para realizar a aprovação.
 * Estrutura baseada em separação de responsabilidades (camadas).
-
----
-
-## 🛠️ Melhorias Futuras
-
-* Implementar autenticação
-* Adicionar validação de dados
-* Criar testes automatizados
-* Documentar com Swagger
-
----
