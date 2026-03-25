@@ -72,14 +72,6 @@ Aprova um voluntário com base no ID informado.
 POST /api/voluntario/aprovar/123
 ```
 
-#### Exemplo de resposta:
-
-```json
-{
-  "message": "Voluntário aprovado com sucesso"
-}
-```
-
 ---
 
 ## 🔁 Fluxo da Requisição
