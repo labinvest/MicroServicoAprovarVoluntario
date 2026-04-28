@@ -1,21 +1,20 @@
-const voluntarios = [
-    {
-        id: 1,
-        aprovado: false
-    },
-    {
-        id: 2,
-        aprovado: false
-    }
-];
+const prisma = require('../db');
 
+const criarVoluntario = async (voluntario) => {
+    return await prisma.voluntario.create({ data: voluntario });
+};
 
-export const criarVoluntario = async (voluntario) =>{
-    voluntarios.push(voluntario);
-}
+const aprovarVoluntario = async (id) => {
+    return await prisma.voluntario.update({
+        where: { id: Number(id) },
+        data: { status: 'aprovado' },
+    });
+};
 
-export const aprovarVoluntario = async (id) =>{
-    const index = voluntarios.findIndex(p => p.id == id);
-    voluntarios[index].aprovado = true;
-    return voluntarios[index];
-}
+const buscarVoluntarioPorId = async (id) => {
+    return await prisma.voluntario.findUnique({
+        where: { id: Number(id) },
+    });
+};
+
+module.exports = { criarVoluntario, aprovarVoluntario, buscarVoluntarioPorId };
