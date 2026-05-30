@@ -4,15 +4,71 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CLIENTE
+  VOLUNTARIO
+}
+
+enum StatusSolicitacaoVoluntario {
+  PENDENTE
+  APROVADA
+  REJEITADA
+}
+
+model User {
+  id     Int    @id @default(autoincrement())
+  role   Role   @default(CLIENTE)
+  perfil Perfil?
+}
+
+model Perfil {
+  id                    Int                    @id @default(autoincrement())
+  userId                Int                    @unique
+  nome                  String
+  user                  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voluntario            Voluntario?
+  solicitacaoVoluntario SolicitacaoVoluntario?
+}
+
+model Categoria {
+  id                     Int                     @id @default(autoincrement())
+  nome                   String                  @unique
+  voluntarios            Voluntario[]
+  solicitacoesVoluntario SolicitacaoVoluntario[]
 }
 
 model Voluntario {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String   @unique
-  telefone  String?
-  status    String   @default("pendente")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             Int       @id @default(autoincrement())
+  perfilId       Int       @unique
+  categoriaId    Int?
+  formacao       String?
+  bio            String?
+  experiencia    Int?
+  avaliacaoMedia Float     @default(0)
+  ativo          Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  perfil         Perfil    @relation(fields: [perfilId], references: [id], onDelete: Cascade)
+  categoria      Categoria? @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+}
+
+model SolicitacaoVoluntario {
+  id              Int                         @id @default(autoincrement())
+  perfilId        Int                         @unique
+  categoriaId     Int?
+  formacao        String?
+  bio             String?
+  experiencia     Int?
+  documentos      Json?
+  status          StatusSolicitacaoVoluntario @default(PENDENTE)
+  observacaoAdmin String?
+  aprovadoEm      DateTime?
+  aprovadoPorId   Int?
+  createdAt       DateTime                    @default(now())
+  updatedAt       DateTime                    @updatedAt
+  perfil          Perfil                      @relation(fields: [perfilId], references: [id], onDelete: Cascade)
+  categoria       Categoria?                  @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
 }
