@@ -12,7 +12,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "{controllers,services,repository,routes}/**,db.js,prisma/schema.prisma"
+      "includeFiles": "{controllers,services,repository,routes}/**,db.js,prisma/schema.prisma,node_modules/.prisma/client/**"
     }
   }
 }
